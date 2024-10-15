@@ -6,5 +6,6 @@ __pycache__
 infra/.terraform*
 infra/terraform.tfstate*
 infra/lambda_function_payload.zip
+infra/production.auto.tfvars
 app/layer
 app/layer.zip
