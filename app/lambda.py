@@ -83,6 +83,8 @@ def build_message(pricing: PricingResponse) -> str:
     Morning peak: {calc_morning_peak(pricing["results"]):.1f}p
     Midday average: {calc_midday_average(pricing["results"]):.1f}p
     Evening peak: {calc_evening_peak(pricing["results"]):.1f}p
+
+    View pricing breakdown: https://octopus.energy/dashboard/new/accounts
     """
 
 
