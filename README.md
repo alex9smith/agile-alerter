@@ -3,6 +3,14 @@
 Email you the next days' Octopus Agile prices every evening.
 
 This is a serverless application that runs on AWS.
+It uses AWS EventBridge Scheduler to trigger a Lambda function at 9PM every day.
+This Lambda calls the Octopus API to get pricing for the next day and sends the message to SNS.
+The user's email is subscribed to the SNS topic to deliver the alert.
+
+At time of writing (Oct 2024) all resource usage from this application falls within the AWS free tier but this may change at any point.
+I am not liable for any costs you may incur from using this application.
+
+To help prevent excessive costs, this application also deploys a budget alert for when total spend in a month exceeds $10.
 
 ## How to deploy
 
@@ -47,6 +55,6 @@ source venv/bin/activate
 
 ## TODO
 
-- eventbridge trigger
-- pricing disclaimer
-- application architecture
+- Make the budget alert optional
+- Tag all resources
+- Make the budget alert filter by tag
