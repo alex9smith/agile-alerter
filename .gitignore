@@ -1,0 +1,10 @@
+# Python
+venv/
+__pycache__
+
+# Terraform
+infra/.terraform*
+infra/terraform.tfstate*
+infra/lambda_function_payload.zip
+app/layer
+app/layer.zip
