@@ -58,3 +58,4 @@ source venv/bin/activate
 - Make the budget alert optional
 - Tag all resources
 - Make the budget alert filter by tag
+- Allow users to select other Agile tariffs
