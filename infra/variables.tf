@@ -1,6 +1,6 @@
-variable "email_address" {
-  type        = string
-  description = "The email address to send pricing and budget alerts to"
+variable "email_addresses" {
+  type        = list(string)
+  description = "The email addresses to send pricing and budget alerts to"
 }
 
 variable "region" {

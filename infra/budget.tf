@@ -10,6 +10,6 @@ resource "aws_budgets_budget" "agile_alerter" {
     threshold                  = 100
     threshold_type             = "PERCENTAGE"
     notification_type          = "ACTUAL"
-    subscriber_email_addresses = [var.email_address]
+    subscriber_email_addresses = var.email_addresses
   }
 }

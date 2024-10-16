@@ -3,8 +3,10 @@ resource "aws_sns_topic" "pricing_alerts" {
 }
 
 resource "aws_sns_topic_subscription" "email_subscription" {
+  for_each = toset(var.email_addresses)
+
   topic_arn = aws_sns_topic.pricing_alerts.arn
   protocol  = "email"
-  endpoint  = var.email_address
+  endpoint  = each.key
 
 }

@@ -1,2 +1,2 @@
-email_address = ""
-region        = ""
+email_addresses = [""]
+region          = ""
