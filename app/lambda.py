@@ -1,13 +1,17 @@
 import datetime
 from os import getenv
-from statistics import mean
 import boto3
 import requests
 from constants import PRICING_BASE_URL
 from aws_lambda_powertools.logging import Logger
+from calc import (
+    calc_evening_peak,
+    calc_midday_average,
+    calc_morning_peak,
+    calc_overnight_average,
+)
 
-from typing import List
-from type import Period, PricingResponse, PricingResult
+from type import Period, PricingResponse
 from aws_lambda_powertools.utilities.typing import LambdaContext
 
 REGIONAL_PRICING_BASE_URL = PRICING_BASE_URL.replace("REGION", getenv("REGION"))
@@ -32,51 +36,6 @@ def get_pricing() -> PricingResponse:
         result["valid_to"] = datetime.datetime.fromisoformat(result["valid_to"])
 
     return pricing
-
-
-def calc_overnight_average(pricing: List[PricingResult]) -> float:
-    # Overnight is earlier than 4AM
-    return mean(
-        r["value_inc_vat"]
-        for r in pricing
-        if r["valid_from"].time() < datetime.time(4, 0)
-    )
-
-
-def calc_morning_peak(pricing: List[PricingResult]) -> float:
-    # Between 7AM and 9AM
-    return mean(
-        r["value_inc_vat"]
-        for r in pricing
-        if (
-            (r["valid_from"].time() >= datetime.time(7, 0))
-            and (r["valid_from"].time() < datetime.time(9, 0))
-        )
-    )
-
-
-def calc_midday_average(pricing: List[PricingResult]) -> float:
-    # Between 10AM and 4PM
-    return mean(
-        r["value_inc_vat"]
-        for r in pricing
-        if (
-            (r["valid_from"].time() >= datetime.time(10, 0))
-            and (r["valid_from"].time() < datetime.time(16, 0))
-        )
-    )
-
-
-def calc_evening_peak(pricing: List[PricingResult]) -> float:
-    # Between 4PM and 7PM
-    return mean(
-        r["value_inc_vat"]
-        for r in pricing
-        if (
-            (r["valid_from"].time() >= datetime.time(16, 0))
-            and (r["valid_from"].time() < datetime.time(19, 0))
-        )
-    )
 
 
 def build_message(pricing: PricingResponse) -> str:
