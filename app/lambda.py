@@ -4,12 +4,14 @@ from statistics import mean
 import boto3
 import requests
 from constants import PRICING_BASE_URL
+from aws_lambda_powertools.logging import Logger
 
 from typing import List
 from type import Period, PricingResponse, PricingResult
 from aws_lambda_powertools.utilities.typing import LambdaContext
 
 REGIONAL_PRICING_BASE_URL = PRICING_BASE_URL.replace("REGION", getenv("REGION"))
+logger = Logger(service="agile-alerter")
 
 
 def get_tomorrow_period() -> Period:
@@ -88,13 +90,19 @@ def build_message(pricing: PricingResponse) -> str:
     """
 
 
+@logger.inject_lambda_context
 def handler(event: dict, context: LambdaContext) -> None:
+    logger.info("Getting pricing")
     pricing = get_pricing()
+    logger.info("Building message")
     message = build_message(pricing)
 
+    logger.info("Setting up SNS client")
     client = boto3.client("sns")
+    logger.info("Publishing to SNS")
     client.publish(
         TopicArn=getenv("TOPIC_ARN"),
         Message=message,
         Subject="Octopus Agile prices for tomorrow",
     )
+    logger.info("Finished")
