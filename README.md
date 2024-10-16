@@ -7,7 +7,7 @@ It uses AWS EventBridge Scheduler to trigger a Lambda function at 8PM every day.
 This Lambda calls the Octopus API to get pricing for the next day and sends the message to SNS.
 The user's email is subscribed to the SNS topic to deliver the alert.
 
-At time of writing (Oct 2024) all resource usage from this application falls within the AWS free tier but this may change at any point.
+At time of writing (Oct 2024) most resource usage from this application falls within the AWS free tier but this may change at any point. Lambda has no free tier but the compute usage of 31 invocations per month is effectively free.
 I am not liable for any costs you may incur from using this application.
 
 To help prevent excessive costs, this application also deploys a budget alert for when total spend in a month exceeds $10.
