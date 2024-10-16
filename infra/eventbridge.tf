@@ -12,6 +12,7 @@ data "aws_iam_policy_document" "scheduler_assume_role" {
 resource "aws_iam_role" "scheduler_role" {
   name               = "eventbridge_scheduler_role"
   assume_role_policy = data.aws_iam_policy_document.scheduler_assume_role.json
+  tags               = var.resource_tags
 }
 
 data "aws_iam_policy_document" "eventbridge_invoke_policy" {
@@ -44,5 +45,4 @@ resource "aws_scheduler_schedule" "agile_alerter_schedule" {
     arn      = aws_lambda_function.agile_alerter_lambda.arn
     role_arn = aws_iam_role.scheduler_role.arn
   }
-
 }

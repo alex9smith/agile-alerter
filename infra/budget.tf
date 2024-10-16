@@ -12,4 +12,5 @@ resource "aws_budgets_budget" "agile_alerter" {
     notification_type          = "ACTUAL"
     subscriber_email_addresses = var.email_addresses
   }
+  tags = var.resource_tags
 }

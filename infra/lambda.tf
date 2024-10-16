@@ -8,6 +8,7 @@ resource "aws_lambda_function" "agile_alerter_lambda" {
   runtime          = "python3.12"
   architectures    = ["arm64"]
   timeout          = 5
+  tags             = var.resource_tags
 
   environment {
     variables = {
@@ -69,11 +70,13 @@ data "aws_iam_policy_document" "assume_role" {
 resource "aws_iam_role" "agile_alerter_lambda_role" {
   name               = "agile_alerter_lambda_role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  tags               = var.resource_tags
 }
 
 resource "aws_cloudwatch_log_group" "example" {
   name              = "/aws/lambda/${var.lambda_function_name}"
   retention_in_days = 7
+  tags              = var.resource_tags
 }
 
 data "aws_iam_policy_document" "lambda_logging" {
@@ -95,6 +98,7 @@ resource "aws_iam_policy" "lambda_logging" {
   path        = "/"
   description = "IAM policy for logging from a lambda"
   policy      = data.aws_iam_policy_document.lambda_logging.json
+  tags        = var.resource_tags
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
@@ -115,6 +119,7 @@ resource "aws_iam_policy" "agile_alerter_publish_to_sns" {
   path        = "/"
   description = "Allow the lambda to publish to the SNS topic"
   policy      = data.aws_iam_policy_document.publish_to_sns.json
+  tags        = var.resource_tags
 }
 
 resource "aws_iam_role_policy_attachment" "publish_to_sns" {

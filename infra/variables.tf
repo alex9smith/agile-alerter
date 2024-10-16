@@ -12,3 +12,10 @@ variable "region" {
 variable "lambda_function_name" {
   default = "agile_alerter_lambda"
 }
+
+variable "resource_tags" {
+  description = "Tags to apply to AWS resources"
+  default = {
+    Application = "agile-alerter"
+  }
+}
