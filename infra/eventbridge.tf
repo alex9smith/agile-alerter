@@ -38,7 +38,7 @@ resource "aws_scheduler_schedule" "agile_alerter_schedule" {
   }
 
   # Every day at 9PM
-  schedule_expression = "cron(0 21 * * ? *)"
+  schedule_expression = "cron(0 19 * * ? *)"
 
   target {
     arn      = aws_lambda_function.agile_alerter_lambda.arn

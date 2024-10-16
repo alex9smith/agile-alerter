@@ -3,7 +3,7 @@
 Email you the next days' Octopus Agile prices every evening.
 
 This is a serverless application that runs on AWS.
-It uses AWS EventBridge Scheduler to trigger a Lambda function at 9PM every day.
+It uses AWS EventBridge Scheduler to trigger a Lambda function at 8PM every day.
 This Lambda calls the Octopus API to get pricing for the next day and sends the message to SNS.
 The user's email is subscribed to the SNS topic to deliver the alert.
 
