@@ -64,4 +64,4 @@ pytest
 
 - Make the budget alert optional
 - Make the budget alert filter by tag
-- Allow users to select other Agile tariffs
+- Allow users to pick a different timezone
