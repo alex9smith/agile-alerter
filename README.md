@@ -53,6 +53,13 @@ You must click this link before you receive any emails.
 source venv/bin/activate
 ```
 
+Unit tests for the Lambda use Pytest.
+From the project root run
+
+```bash
+pytest
+```
+
 ## TODO
 
 - Make the budget alert optional
