@@ -10,6 +10,7 @@ from calc import (
     calc_morning_peak,
     calc_overnight_average,
 )
+from dates import get_tomorrow_period, london_tz
 
 from type import Period, PricingResponse
 from aws_lambda_powertools.utilities.typing import LambdaContext
@@ -18,22 +19,19 @@ REGIONAL_PRICING_BASE_URL = PRICING_BASE_URL.replace("REGION", getenv("REGION"))
 logger = Logger(service="agile-alerter")
 
 
-def get_tomorrow_period() -> Period:
-    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-    return {
-        "period_from": f"{tomorrow.strftime("%Y-%m-%d")}T00:00Z",
-        "period_to": f"{tomorrow.strftime("%Y-%m-%d")}T23:59Z",
-    }
-
-
 def get_pricing() -> PricingResponse:
     response = requests.get(REGIONAL_PRICING_BASE_URL, params=get_tomorrow_period())
     pricing: PricingResponse = response.json()
 
-    # parse all the dates upfront
+    # Parse all the dates upfront
+    # The API returns datetimes in UTC so convert back to London time
     for result in pricing["results"]:
-        result["valid_from"] = datetime.datetime.fromisoformat(result["valid_from"])
-        result["valid_to"] = datetime.datetime.fromisoformat(result["valid_to"])
+        result["valid_from"] = datetime.datetime.fromisoformat(
+            result["valid_from"]
+        ).astimezone(london_tz)
+        result["valid_to"] = datetime.datetime.fromisoformat(
+            result["valid_to"]
+        ).astimezone(london_tz)
 
     return pricing
 
