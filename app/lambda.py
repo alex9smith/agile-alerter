@@ -21,6 +21,7 @@ logger = Logger(service="agile-alerter")
 
 def get_pricing() -> PricingResponse:
     response = requests.get(REGIONAL_PRICING_BASE_URL, params=get_tomorrow_period())
+    logger.info(f"Calling API URL: {response.url}")
     pricing: PricingResponse = response.json()
 
     # Parse all the dates upfront
